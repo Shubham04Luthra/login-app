@@ -30,12 +30,7 @@ function LoginPage() {
   const googleLogin = async () => {
     try {
       const userInfo = await signInWithPopup(auth, googleAuthProvider);
-      console.log(
-        "Login successfull",
-        userInfo.user.email,
-        userInfo.user.displayName,
-        userInfo.user.email
-      );
+
       const jsonUserData = JSON.stringify({
         email: userInfo.user.email,
         username: userInfo.user.displayName,
@@ -54,7 +49,7 @@ function LoginPage() {
   const facebookLogin = async () => {
     try {
       const userInfo = await signInWithPopup(auth, facebookAuthProvider);
-      console.log("Login successfull", userInfo);
+
       {
         userInfo && navigate("/home");
       }
@@ -89,6 +84,13 @@ function LoginPage() {
     } else if (userData.password.length < 8) {
       error.password = "Password must be at least 8 characters";
     }
+    // Validating because the given API is working only with 'emilyspass' password.
+    else if (userData.password !== "emilyspass") {
+      console.log(
+        "Password error displayed as API '/auth/login' only accepts 'emilyspass'.  "
+      );
+      error.password = "Password must be 'emilyspass'.";
+    }
 
     setErrorMessage(error);
 
@@ -108,15 +110,8 @@ function LoginPage() {
 
         localStorage.setItem("authToken", finalResult.accessToken);
         localStorage.setItem("userData", JSON.stringify(userData));
-        console.log(
-          "Form submitted:",
-          userData,
-          JSON.stringify({
-            username: userData.username,
-            password: userData.password,
-          })
-        );
-        finalResult && navigate("/home");
+
+        finalResult?.accessToken && navigate("/home");
       } catch (error) {
         console.log(error);
       }
@@ -184,7 +179,7 @@ function LoginPage() {
 
         <form
           ref={formRef}
-          onClick={handleSubmit}
+          onSubmit={handleSubmit}
           className="flex flex-col gap-8"
         >
           <div className="gap-2.5   flex flex-col">
@@ -243,7 +238,6 @@ function LoginPage() {
               </span>
             </div>
             <Link
-              to=""
               style={{ textDecoration: "none" }}
               className=" font-poppins font-normal  mobile:text-right text-lg leading-5.42 text-indigo"
             >
