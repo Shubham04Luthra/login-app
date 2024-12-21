@@ -36,11 +36,11 @@ const Input = function Input({
             type={type === "password" && visiblity ? "text" : type}
             {...props}
             id={id}
-            className={` bg-offWhite font-poppins font-bold text-base text-darkPurple focus:outline-none  pr-3   ${className}`}
+            className={` bg-offWhite mobile:w-full  mobile:text-xs font-poppins font-bold text-base text-darkPurple focus:outline-none  pr-3   ${className}`}
           />
         </div>
         {type === "password" ? (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+          <div className="absolute inset-y-0 right-0 mobile:-right-3 pr-3 flex items-center">
             {" "}
             <img
               onClick={() => {
